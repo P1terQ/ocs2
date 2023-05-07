@@ -63,16 +63,19 @@ scalar_t estimateTimeToTarget(const vector_t& desiredBaseDisplacement) {
 TargetTrajectories commandLineToTargetTrajectories(const vector_t& commadLineTarget, const SystemObservation& observation) {
   const vector_t currentPose = observation.state.segment<6>(6);
   const vector_t targetPose = [&]() {
+
     vector_t target(6);
+
     // base p_x, p_y are relative to current state
     target(0) = currentPose(0) + commadLineTarget(0);
     target(1) = currentPose(1) + commadLineTarget(1);
     // base z relative to the default height
     target(2) = comHeight + commadLineTarget(2);
+
     // theta_z relative to current
     target(3) = currentPose(3) + commadLineTarget(3) * M_PI / 180.0;
     // theta_y, theta_x
-    target(4) = currentPose(4);
+    target(4) = currentPose(4); //! 这边是currentPose
     target(5) = currentPose(5);
     return target;
   }();
@@ -85,7 +88,9 @@ TargetTrajectories commandLineToTargetTrajectories(const vector_t& commadLineTar
 
   // desired state trajectory
   vector_array_t stateTrajectory(2, vector_t::Zero(observation.state.size()));
+  
   stateTrajectory[0] << vector_t::Zero(6), currentPose, defaultJointState;
+
   stateTrajectory[1] << vector_t::Zero(6), targetPose, defaultJointState;
 
   // desired input trajectory (just right dimensions, they are not used)

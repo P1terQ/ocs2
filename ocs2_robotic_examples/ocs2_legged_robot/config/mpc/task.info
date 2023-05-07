@@ -9,7 +9,7 @@ legged_robot_interface
 
 model_settings
 {
-  positionErrorGain             0.0 ; 20.0
+  positionErrorGain             50.0 ; 20.0
   phaseTransitionStanceTime     0.4
 
   verboseCppAd                  true
@@ -197,7 +197,7 @@ Q
   (11,11) 200.0    ; theta_base_x
 
   ;; Leg Joint Positions: [LF, LH, RF, RH] ;;
-  (12,12) 20.0     ; LF_HAA
+  (12,12) 20.0     ; LF_HAA 20.0
   (13,13) 20.0     ; LF_HFE
   (14,14) 20.0     ; LF_KFE
   (15,15) 20.0     ; LH_HAA

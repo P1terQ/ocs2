@@ -57,6 +57,7 @@ scalar_t SwingTrajectoryPlanner::getZvelocityConstraint(size_t leg, scalar_t tim
 /******************************************************************************************************/
 scalar_t SwingTrajectoryPlanner::getZpositionConstraint(size_t leg, scalar_t time) const {
   const auto index = lookup::findIndexInTimeArray(feetHeightTrajectoriesEvents_[leg], time);
+  std::cout << "[SwingTrajPlanner]: leg" << leg << " " << feetHeightTrajectories_[leg][index].position(time) << std::endl;
   return feetHeightTrajectories_[leg][index].position(time);
 }
 
@@ -84,15 +85,19 @@ void SwingTrajectoryPlanner::update(const ModeSchedule& modeSchedule, const feet
 
   feet_array_t<std::vector<int>> startTimesIndices;
   feet_array_t<std::vector<int>> finalTimesIndices;
-  for (size_t leg = 0; leg < numFeet_; leg++) {
+  for (size_t leg = 0; leg < numFeet_; leg++) 
+  {
     std::tie(startTimesIndices[leg], finalTimesIndices[leg]) = updateFootSchedule(eesContactFlagStocks[leg]);
   }
 
-  for (size_t j = 0; j < numFeet_; j++) {
+  for (size_t j = 0; j < numFeet_; j++) 
+  {
     feetHeightTrajectories_[j].clear();
     feetHeightTrajectories_[j].reserve(modeSequence.size());
-    for (int p = 0; p < modeSequence.size(); ++p) {
-      if (!eesContactFlagStocks[j][p]) {  // for a swing leg
+    for (int p = 0; p < modeSequence.size(); ++p) 
+    {
+      if (!eesContactFlagStocks[j][p]) 
+      {  // for a swing leg
         const int swingStartIndex = startTimesIndices[j][p];
         const int swingFinalIndex = finalTimesIndices[j][p];
         checkThatIndicesAreValid(j, p, swingStartIndex, swingFinalIndex, modeSequence);
@@ -106,10 +111,18 @@ void SwingTrajectoryPlanner::update(const ModeSchedule& modeSchedule, const feet
         const CubicSpline::Node touchDown{swingFinalTime, touchDownHeightSequence[j][p], scaling * config_.touchDownVelocity};
         const scalar_t midHeight = std::min(liftOffHeightSequence[j][p], touchDownHeightSequence[j][p]) + scaling * config_.swingHeight;
         feetHeightTrajectories_[j].emplace_back(liftOff, midHeight, touchDown);
-      } else {  // for a stance leg
-        // Note: setting the time here arbitrarily to 0.0 -> 1.0 makes the assert in CubicSpline fail
-        const CubicSpline::Node liftOff{0.0, liftOffHeightSequence[j][p], 0.0};
-        const CubicSpline::Node touchDown{1.0, liftOffHeightSequence[j][p], 0.0};
+      } 
+      else 
+      {  // for a stance leg
+        //! Note: setting the time here arbitrarily to 0.0 -> 1.0 makes the assert in CubicSpline fail
+        const int swingStartIndex = startTimesIndices[j][p];
+        const int swingFinalIndex = finalTimesIndices[j][p];
+        const scalar_t swingStartTime = eventTimes[swingStartIndex];
+        const scalar_t swingFinalTime = eventTimes[swingFinalIndex];
+        const CubicSpline::Node liftOff{swingStartTime, liftOffHeightSequence[j][p], 0.0};
+        const CubicSpline::Node touchDown{swingFinalTime, liftOffHeightSequence[j][p], 0.0};
+        // const CubicSpline::Node liftOff{0.0, liftOffHeightSequence[j][p], 0.0};
+        // const CubicSpline::Node touchDown{1.0, liftOffHeightSequence[j][p], 0.0};
         feetHeightTrajectories_[j].emplace_back(liftOff, liftOffHeightSequence[j][p], touchDown);
       }
     }

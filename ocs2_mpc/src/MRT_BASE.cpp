@@ -102,7 +102,8 @@ void MRT_BASE::initRollout(const RolloutBase* rolloutPtr) {
 /******************************************************************************************************/
 /******************************************************************************************************/
 void MRT_BASE::evaluatePolicy(scalar_t currentTime, const vector_t& currentState, vector_t& mpcState, vector_t& mpcInput, size_t& mode) {
-  if (activePrimalSolutionPtr_ == nullptr) {
+  if (activePrimalSolutionPtr_ == nullptr) 
+  {
     throw std::runtime_error("[MRT_BASE::evaluatePolicy] updatePolicy() should be called first!");
   }
 

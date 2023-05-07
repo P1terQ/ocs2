@@ -72,6 +72,7 @@ struct ModeSchedule {
     modeSequence.clear();
   }
 
+  std::vector<scalar_t> terrainHeight;
   std::vector<scalar_t> eventTimes;  // event times of size N - 1
   std::vector<size_t> modeSequence;  // mode sequence of size N
 };

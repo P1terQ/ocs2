@@ -66,6 +66,10 @@ class GaitSchedule {
    */
   void insertModeSequenceTemplate(const ModeSequenceTemplate& modeSequenceTemplate, scalar_t startTime, scalar_t finalTime);
 
+  // scalar_t SetSwingTimeLeft_userdefined(const scalar_t time);
+
+  // scalar_t getSwingTimeLeft_userdefined() const;
+
  private:
   /**
    * Extends the switch information from lowerBoundTime to upperBoundTime based on the template mode sequence.
@@ -79,6 +83,8 @@ class GaitSchedule {
   ModeSchedule modeSchedule_;
   ModeSequenceTemplate modeSequenceTemplate_;
   scalar_t phaseTransitionStanceTime_;
+
+  // scalar_t swingTimeLeft_userdefined;
 };
 
 }  // namespace legged_robot

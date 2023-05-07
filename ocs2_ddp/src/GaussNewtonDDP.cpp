@@ -958,7 +958,8 @@ void GaussNewtonDDP::runImpl(scalar_t initTime, const vector_t& initState, scala
 /******************************************************************************************************/
 void GaussNewtonDDP::runImpl(scalar_t initTime, const vector_t& initState, scalar_t finalTime, const PrimalSolution& primalSolution) {
   // if PrimalSolution's controller exists, use it for initialization
-  if (primalSolution.controllerPtr_ != nullptr && !primalSolution.controllerPtr_->empty()) {
+  if (primalSolution.controllerPtr_ != nullptr && !primalSolution.controllerPtr_->empty()) 
+  {
     optimizedPrimalSolution_.modeSchedule_ = primalSolution.modeSchedule_;
     runImpl(initTime, initState, finalTime, primalSolution.controllerPtr_.get());
 
@@ -977,7 +978,8 @@ void GaussNewtonDDP::runImpl(scalar_t initTime, const vector_t& initState, scala
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-void GaussNewtonDDP::runImpl(scalar_t initTime, const vector_t& initState, scalar_t finalTime) {
+void GaussNewtonDDP::runImpl(scalar_t initTime, const vector_t& initState, scalar_t finalTime) 
+{
   if (ddpSettings_.displayInfo_) {
     std::cerr << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++";
     std::cerr << "\n+++++++++++++ " + ddp::toAlgorithmName(ddpSettings_.algorithm_) + " solver is initialized ++++++++++++++";

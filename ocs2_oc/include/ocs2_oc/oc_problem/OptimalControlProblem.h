@@ -46,6 +46,7 @@ namespace ocs2 {
 
 /** Optimal Control Problem definition */
 struct OptimalControlProblem {
+  
   /* Cost */
   /** Intermediate cost */
   std::unique_ptr<StateInputCostCollection> costPtr;

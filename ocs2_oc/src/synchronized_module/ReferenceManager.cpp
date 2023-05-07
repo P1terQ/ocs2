@@ -40,9 +40,12 @@ ReferenceManager::ReferenceManager(TargetTrajectories initialTargetTrajectories,
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-void ReferenceManager::preSolverRun(scalar_t initTime, scalar_t finalTime, const vector_t& initState) {
-  targetTrajectories_.updateFromBuffer();
-  modeSchedule_.updateFromBuffer();
+void ReferenceManager::preSolverRun(scalar_t initTime, scalar_t finalTime, const vector_t& initState) 
+{
+  targetTrajectories_.updateFromBuffer(); // update targetTrajectories_, also update in switchedModelReferenceManager
+
+  modeSchedule_.updateFromBuffer(); // update modelSchedule, also update in switchedModelReferenceManager
+
   modifyReferences(initTime, finalTime, initState, targetTrajectories_.get(), modeSchedule_.get());
 }
 

@@ -102,8 +102,11 @@ vector_t CentroidalModelRbdConversions::computeCentroidalStateFromRbdModel(const
   const auto& info = mapping_.getCentroidalModelInfo();
 
   vector_t qPinocchio(info.generalizedCoordinatesNum);
+
   qPinocchio.head<3>() = rbdState.segment<3>(3);
+
   qPinocchio.segment<3>(3) = rbdState.head<3>();
+
   qPinocchio.tail(info.actuatedDofNum) = rbdState.segment(6, info.actuatedDofNum);
 
   vector_t vPinocchio(info.generalizedCoordinatesNum);
@@ -116,7 +119,9 @@ vector_t CentroidalModelRbdConversions::computeCentroidalStateFromRbdModel(const
   const auto& A = getCentroidalMomentumMatrix(pinocchioInterface_);
 
   vector_t state(info.stateDim);
+
   centroidal_model::getNormalizedMomentum(state, info).noalias() = A * vPinocchio / info.robotMass;
+  
   centroidal_model::getGeneralizedCoordinates(state, info) = qPinocchio;
 
   return state;

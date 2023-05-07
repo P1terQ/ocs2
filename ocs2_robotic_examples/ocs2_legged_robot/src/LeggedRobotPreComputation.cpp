@@ -72,7 +72,8 @@ void LeggedRobotPreComputation::request(RequestSet request, scalar_t t, const ve
     EndEffectorLinearConstraint::Config config;
     config.b = (vector_t(1) << -swingTrajectoryPlannerPtr_->getZvelocityConstraint(footIndex, t)).finished();
     config.Av = (matrix_t(1, 3) << 0.0, 0.0, 1.0).finished();
-    if (!numerics::almost_eq(settings_.positionErrorGain, 0.0)) {
+    if (!numerics::almost_eq(settings_.positionErrorGain, 0.0)) 
+    {
       config.b(0) -= settings_.positionErrorGain * swingTrajectoryPlannerPtr_->getZpositionConstraint(footIndex, t);
       config.Ax = (matrix_t(1, 3) << 0.0, 0.0, settings_.positionErrorGain).finished();
     }
